@@ -74,6 +74,7 @@ func main() {
 	var certKey = flag.String("ck", "", "certificate key")
 	var user = flag.String("u", "", "user id")
 	var pswd = flag.String("pw", "", "password")
+	var sctp = flag.Bool("sctp", false, "sctp")
 
 	log.SetFlags(0)
 	flag.Usage = usage
@@ -85,7 +86,7 @@ func main() {
 	}
 
 	// Setup the connect options
-	opts := []nats.Option{nats.Name("NATS Streaming Benchmark")}
+	opts := []nats.Option{nats.Name("NATS Streaming Benchmark"), nats.Sctp(*sctp)}
 	// Use UserCredentials
 	if *userCreds != "" {
 		opts = append(opts, nats.UserCredentials(*userCreds))

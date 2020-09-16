@@ -75,7 +75,7 @@ func main() {
 	}
 
 	// Connect Options.
-	opts := []nats.Option{nats.Name("NATS Streaming Example Publisher")}
+	opts := []nats.Option{nats.Name("NATS Streaming Example Publisher"), nats.Sctp(true)}
 	// Use UserCredentials
 	if userCreds != "" {
 		opts = append(opts, nats.UserCredentials(userCreds))

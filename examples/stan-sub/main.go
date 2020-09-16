@@ -103,7 +103,7 @@ func main() {
 	}
 
 	// Connect Options.
-	opts := []nats.Option{nats.Name("NATS Streaming Example Subscriber")}
+	opts := []nats.Option{nats.Name("NATS Streaming Example Subscriber"), nats.Sctp(true)}
 	// Use UserCredentials
 	if userCreds != "" {
 		opts = append(opts, nats.UserCredentials(userCreds))
