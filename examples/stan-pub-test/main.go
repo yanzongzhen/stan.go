@@ -61,6 +61,7 @@ func main() {
 	flag.BoolVar(&async, "async", false, "Publish asynchronously")
 	flag.StringVar(&userCreds, "cr", "", "Credentials File")
 	flag.StringVar(&userCreds, "creds", "", "Credentials File")
+	var sctp = flag.Bool("sctp", false, "sctp")
 
 	log.SetFlags(0)
 	flag.Usage = usage
@@ -73,7 +74,7 @@ func main() {
 	}
 
 	// Connect Options.
-	opts := []nats.Option{nats.Name("NATS Streaming Example Publisher")}
+	opts := []nats.Option{nats.Name("NATS Streaming Example Publisher"), nats.Sctp(*sctp)}
 	// Use UserCredentials
 	if userCreds != "" {
 		opts = append(opts, nats.UserCredentials(userCreds))

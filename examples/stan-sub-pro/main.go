@@ -90,6 +90,7 @@ func main() {
 	flag.BoolVar(&unsubscribe, "unsubscribe", false, "Unsubscribe the durable on exit")
 	flag.StringVar(&userCreds, "cr", "", "Credentials File")
 	flag.StringVar(&userCreds, "creds", "", "Credentials File")
+	var sctp = flag.Bool("sctp", false, "sctp")
 
 	log.SetFlags(0)
 	flag.Usage = usage
@@ -103,7 +104,7 @@ func main() {
 	}
 
 	// Connect Options.
-	opts := []nats.Option{nats.Name("NATS Streaming Example Subscriber")}
+	opts := []nats.Option{nats.Name("NATS Streaming Example Subscriber"), nats.Sctp(*sctp)}
 	// Use UserCredentials
 	if userCreds != "" {
 		opts = append(opts, nats.UserCredentials(userCreds))
@@ -113,7 +114,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer nc.Close()
 
 	sc, err := stan.Connect(clusterID, clientID, stan.NatsConn(nc),
 		stan.SetConnectionLostHandler(func(_ stan.Conn, reason error) {
@@ -123,6 +123,7 @@ func main() {
 		log.Fatalf("Can't connect: %v.\nMake sure a NATS Streaming Server is running at: %s", err, URL)
 	}
 	log.Printf("Connected to %s clusterID: [%s] clientID: [%s]\n", URL, clusterID, clientID)
+	defer sc.Close()
 
 	// Process Subscriber Options.
 	startOpt := stan.StartAt(pb.StartPosition_NewOnly)
